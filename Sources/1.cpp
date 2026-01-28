@@ -1,17 +1,18 @@
 #include <iostream>
+#include <random>
 #include <ctime>
 int main() {
 	const int sizex = 5;
 	const int sizey = 10;
-	int** array = new int*[sizex];
-	
+	float** array = new float*[sizex];
 	for (int i = 0; i < sizex; i++) {
-		array[i] = new int[sizey];
+		array[i] = new float[sizey];
 	}
-	std::srand(std::time(0));
+	std::mt19937 engine(std::time(0));
+	std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 	for (int i = 0; i < sizex; i++) {
 		for (int j = 0; j < sizey; j++) {
-			array[i][j] = rand() % 100;
+			array[i][j] = dist(engine);
 			std::cout << array[i][j] << " ";
 		}
 		std::cout << std::endl;
