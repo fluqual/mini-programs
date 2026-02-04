@@ -5,9 +5,9 @@
 int main() {
 	const int sizex = 5;
 	const int sizey = 10;
-	std::vector<std::vector<float>>* array = new std::vector<std::vector<float>>(sizex, std::vector<float>(sizey, 0));
+	std::vector<std::vector<int>>* array = new std::vector<std::vector<int>>(sizex, std::vector<int>(sizey, 0));
 	std::mt19937 engine(std::time(0));
-	std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+	std::uniform_int_distribution<int> dist(-3, 10);
 	for (int i = 0; i < sizex; i++) {
 		for (int j = 0; j < sizey; j++) {
 			(*array)[i][j] = dist(engine);
