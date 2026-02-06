@@ -1,22 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <unordered_map>
+#include <string>
 #include <ctime>
 int main() {
 	std::ios_base::sync_with_stdio(false);
 	std::clock_t t1 = std::clock();
-	std::unordered_map<int, std::vector<std::array<int, 3>>> sorted_combos;
+	std::array<std::vector<std::string>, 28> sorted_combos;
 	bool print_combinations = true;
 	for (int i = 0; i < 28; i++) {
-		std::vector<std::array<int, 3>> vec = {};
+		std::vector<std::string> vec = {};
 		sorted_combos[i] = vec;
 	}
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			for (int z = 0; z < 10; z++) {
-				std::array<int, 3> arr = {i, j, z};
-				sorted_combos[i + j + z].push_back(arr);
+				std::string str = std::to_string(i) + std::to_string(j) + std::to_string(z);
+				sorted_combos[i + j + z].push_back(str);
 			}
 		}
 		
@@ -26,12 +26,8 @@ int main() {
 		for (int j = 0; j < sorted_combos[i].size(); j++) {
 			for (int z = 0; z < sorted_combos[i].size(); z++) {
 				if (print_combinations) {
-					for (int y = 0; y < 3; y++) {
-						std::cout << sorted_combos[i][j][y];
-					}
-					for (int y = 0; y < 3; y++) {
-						std::cout << sorted_combos[i][z][y];
-					}
+					std::cout << sorted_combos[i][j];
+					std::cout << sorted_combos[i][z];
 				std::cout << " ";
 				}
 				count++;
