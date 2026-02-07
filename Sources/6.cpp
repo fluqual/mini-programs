@@ -26,8 +26,7 @@ int main() {
 		for (int j = 0; j < sorted_combos[i].size(); j++) {
 			for (int z = 0; z < sorted_combos[i].size(); z++) {
 				if (print_combinations) {
-					std::cout << sorted_combos[i][j];
-					std::cout << sorted_combos[i][z];
+					std::cout << sorted_combos[i][j] + sorted_combos[i][z];
 				std::cout << " ";
 				}
 				count++;
