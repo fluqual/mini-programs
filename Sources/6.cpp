@@ -2,10 +2,8 @@
 #include <vector>
 #include <array>
 #include <string>
-#include <ctime>
 int main() {
 	std::ios_base::sync_with_stdio(false);
-	std::clock_t t1 = std::clock();
 	std::array<std::vector<std::string>, 28> sorted_combos;
 	bool print_combinations = true;
 	for (int i = 0; i < 28; i++) {
@@ -39,8 +37,6 @@ int main() {
 			std::cout << std::endl;
 		}
 	}
-	std::clock_t t2 = std::clock();
 	std::setlocale(LC_ALL, "ru_RU.UTF-8");
 	std::cout << "Количество счастливых билетов: " << count << std::endl;
-	std::cout << "Скорость программы в секундах: " << ((double)(t2 - t1) / CLOCKS_PER_SEC);
 }
