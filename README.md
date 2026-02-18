@@ -1,2 +1,10 @@
-\[1](Sources/CPP/1.cpp)
+- [1](Sources/CPP/1.cpp)
+- [2](Sources/CPP/2.cpp)
+- [3](Sources/CPP/3.cpp)
+- [4](Sources/CPP/4.cpp)
+- [6](Sources/CPP/6.cpp)
+- [7](Sources/CPP/7.cpp)
+- [9](Sources/Rust/9.rs)
+- [12](Sources/CPP/12.cpp)
+- [22](Sources/C/22.c)
 
