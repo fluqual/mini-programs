@@ -6,7 +6,9 @@
 - [5](Sources/CPP/5.cpp) (C++)
 - [6](Sources/CPP/6.cpp) (C++)
 - [7](Sources/CPP/7.cpp) (C++)
-- [9](Sources/Rust/9.rs) (Rust)
+- [9](Sources/Rust/9.rs) (Rust, unfinished)
+- [10](Sources/C/10.c) (C)
+- [11](Sources/C/11.c) (C)
 - [12](Sources/CPP/12.cpp) (C++)
+- [13](Sources/C/13.c) (C)
 - [22](Sources/C/22.c) (C)
-
