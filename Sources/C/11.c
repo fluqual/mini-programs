@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <locale.h>
 void findNumbersWithDiffDigits(int n) {
-	char* buffer = malloc(n * 12);
+	size_t buf_size = 1024;
+	char* buffer = malloc(buf_size);
 	int offset = 0;
 	for (int i = 0; i < n; i++) {
 		int tempi = i;
@@ -16,6 +17,10 @@ void findNumbersWithDiffDigits(int n) {
 			tempi /= 10;
 		}
 		if (tempi == 0) {
+			if (offset + 13 > buf_size) {
+				buf_size *= 2;
+				buffer = realloc(buffer, buf_size);
+			}
 			offset += sprintf(buffer + offset, "%i\n", i);
 		}
 	}
