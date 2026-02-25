@@ -3,20 +3,13 @@
 #include <Windows.h>
 
 std::string removeFirstAndLastSpaces(std::string str) {
-    if (str.back() == ' ') {
-        int i = 0;
-        while (str[str.length() - 1 - i] == ' ') {
-            str.pop_back();
-            i++;
-        }
+    while (str.back() == ' ') {
+        str.pop_back();
     }
-    if (str.front() == ' ') {
-        while (str[0] == ' ') {
-            str.erase(0, 1);
-        }
+    while (str[0] == ' ') {
+        str.erase(0, 1);
     }
     return str;
-
 }
 int main() {
 	std::setlocale(LC_ALL, "ru_RU.UTF-8");
