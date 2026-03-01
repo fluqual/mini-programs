@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <locale.h>
 
 void swap(int* x, int* y) {
@@ -46,5 +45,6 @@ int main() {
 		printf("%i ", arr[i]);
 	}
 	printf("\n");
+    free(arr);
 	return 0;
 }
