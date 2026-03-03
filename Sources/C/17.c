@@ -47,13 +47,13 @@ void str_push_back_char(dynamic_str* str, char c) {
 
 void str_read_word(dynamic_str* str) {
     int ch;
-    while ((ch = fgetc(stdin)) != ' ' && ch != '\n' && ch != EOF) {
+    while ((ch = getchar()) != ' ' && ch != '\n' && ch != EOF) {
         str_push_back_char(str, (char)ch);
     }
 }
 void str_read_line(dynamic_str* str) {
     int ch;
-    while ((ch = fgetc(stdin)) != '\n' && ch != EOF) {
+    while ((ch = getchar()) != '\n' && ch != EOF) {
         str_push_back_char(str, (char)ch);
     }
 }
