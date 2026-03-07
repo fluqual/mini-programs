@@ -18,3 +18,5 @@
 - [19](Sources/C/19.c) (C)
 - [21](Sources/C/21.c) (C)
 - [22](Sources/C/22.c) (C)
+- [25](Sources/C/25.c) (C)
+- [30](Sources/C/30) (C, unfinished)
