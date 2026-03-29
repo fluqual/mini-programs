@@ -9,26 +9,6 @@ typedef struct {
     size_t capacity;
 } dynamic_str;
 
-void str_push_back_arr(dynamic_str* str, char* items) {
-    if (str->capacity == 0) {
-        str->capacity = 256;
-    }
-    if (str->items == NULL) {
-        str->items = malloc(sizeof(*str->items) * str->capacity);
-    }
-    int i = 0;
-    while (items[i] != '\0') {
-        if (str->count + 2 > str->capacity) {
-            str->capacity *= 2;
-            str->items = realloc(str->items, sizeof(*str->items) * str->capacity);
-        }
-        str->items[str->count] = items[i];
-        str->count++;
-        i++;
-    }
-    str->items[str->count] = '\0';
-}
-
 void str_push_back_char(dynamic_str* str, char c) {
     if (str->capacity == 0) {
         str->capacity = 256;
@@ -68,6 +48,9 @@ int str_lchr(dynamic_str* str, char c) {
     }
     return pos;
 }
+void clear_input_buffer() {
+    while (getchar() != '\n');
+}
 int main() {
 	setlocale(LC_ALL, "ru_RU.UTF-8");
     SetConsoleCP(1251);
@@ -76,7 +59,7 @@ int main() {
     char c;
     printf("Введите символ: ");
     scanf(" %c", &c);
-    while (getchar() != '\n'); //input buffer clearing
+    clear_input_buffer();
     printf("Введите строку: ");
     str_read_line(&str);
     int lchr = str_lchr(&str,c);   
