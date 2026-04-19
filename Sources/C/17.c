@@ -25,12 +25,6 @@ void str_push_back_char(dynamic_str* str, char c) {
     str->items[str->count] = '\0';
 }
 
-void str_read_word(dynamic_str* str) {
-    int ch;
-    while ((ch = getchar()) != ' ' && ch != '\n' && ch != EOF) {
-        str_push_back_char(str, (char)ch);
-    }
-}
 void str_read_line(dynamic_str* str) {
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF) {

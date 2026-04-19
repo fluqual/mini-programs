@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
-#include <Windows.h>
+//#include <Windows.h>
 typedef struct {
 	char* items;
 	size_t count;
@@ -23,28 +23,9 @@ void str_push_back(dynamic_str* str, char c) {
 	str->count++;	
 }
 
-void str_push_back_arr(dynamic_str* str, char* arr) {
-	int i = 0;
-	while (arr[i] != '\0') {
-		str_push_back(str, arr[i]);
-	}
+void free_dynamic_str(dynamic_str* a) {
+    free(a->items);
 }
-
-struct person {
-	dynamic_str full_name;
-	char date_of_birth[11];
-} ;
-
-typedef struct {
-	dynamic_str school_name;
-	char class[3];
-} schoolboy;
-
-typedef struct {
-	dynamic_str university;
-	dynamic_str faculty;
-	dynamic_str group;
-} student;
 
 void clear_input_buffer() {
 	while (getchar() != '\n');
@@ -55,19 +36,87 @@ void str_input_line(dynamic_str* str) {
 	while ((c = getchar()) != '\0' && c != '\n' && c != EOF) {
 		str_push_back(str, c);
 	}
-	clear_input_buffer();
 }
 
+struct person {
+	dynamic_str full_name;
+	char date_of_birth[11];
+};
 
-struct person input_human_data() {
+struct schoolboy{
+    struct person* person;
+	dynamic_str school_name;
+	char class[3];
+};
+
+struct student {
+    struct person* person;
+	dynamic_str university;
+	dynamic_str faculty;
+	dynamic_str group;
+};
+
+
+struct person input_person_data() {
 	struct person data = {0};
 	printf("Введите имя человека: ");
-	str_input_line(&(data.full_name));
+	str_input_line(&data.full_name);
 	printf("Введите дату рождения: ");
-    scanf("%s", &data.date_of_birth);
+    scanf("%s", data.date_of_birth);
     return data;
 }
 
-int main() {
-	
+struct student* input_student_data(struct person* a) {
+    struct student* data = malloc(sizeof(struct student));
+    data->person = a;
+    printf("Введите университет студента: ");
+    str_input_line(&data->university);
+    printf("Введите факультет студента: ");
+    str_input_line(&data->faculty);
+    printf("Введите группу студента: ");
+    str_input_line(&data->group);
+    return data;
 }
+
+void clear_student_data(struct student* a) {
+    free_dynamic_str(&a->group);
+    free_dynamic_str(&a->faculty);
+    free_dynamic_str(&a->university);
+}
+
+struct schoolboy* input_schoolboy_data(struct person* a) {
+    struct schoolboy* data = malloc(sizeof(struct schoolboy));
+    data->person = a;
+    printf("Введите имя школы: ");
+    str_input_line(&data->school_name);
+    printf("Введите класс школьника: ");
+    scanf("%s", data->class);
+    return data;
+}
+
+void clear_schoolboy_data(struct schoolboy* a) {
+    free_dynamic_str(&a->school_name);
+}
+
+int main() {
+    void* person_data;
+    struct person a = input_person_data();
+    int is_student = 0;
+    printf("Человек - студент? (0 - нет, 1 - да): ");
+    scanf("%i", &is_student);
+    clear_input_buffer();
+    if (is_student == 1) {
+        person_data = (void*)input_student_data(&a);
+        clear_student_data((struct student*)person_data);
+    } 
+    else {
+        person_data = (void*)input_schoolboy_data(&a);
+        clear_schoolboy_data((struct schoolboy*)person_data);
+    }
+    free_dynamic_str(&a.full_name);
+}
+
+
+
+
+
