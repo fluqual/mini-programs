@@ -33,19 +33,39 @@ matrix* create_matrix_from_input(int num) {
 			scanf("%i", &new_m->data[i][j]);
 		}
 	}
+    return new_m;
 }
 
 matrix* multiply_matrices(matrix* x, matrix* y) {
 	matrix* multiplied_m = create_matrix(x->size_x, y->size_y);
-	for (int i = 0; i < multiplied_m->size_x; i++) {
-		for (int j = 0; j < multiplied_m->size_y; j++) {
-
-		}
-
+	if (x->size_y != y->size_x) {
+		return NULL;
 	}
-	
+	for (int i = 0; i < x->size_x; i++) {
+		for (int j = 0; j < y->size_y; j++) {
+		    int sum = 0;
+            for (int k = 0; k < x->size_y; k++) {
+			    sum += x->data[i][k] * y->data[k][j];
+            }
+            multiplied_m->data[i][j] = sum;
+		}
+	}
+	return multiplied_m;
 }
 
 int main() {
-	matrix* m = create_matrix_from_input(1);
+	matrix* m_1 = create_matrix_from_input(1);
+	matrix* m_2 = create_matrix_from_input(2);
+	matrix* result = multiply_matrices(m_1, m_2);
+    if (result == NULL) {
+        printf("Умножение невозможно");
+        return 0;
+    }
+	for (int i = 0; i < result->size_x; i++) {
+		for (int j = 0; j < result->size_y; j++) {
+			printf("%i ", result->data[i][j]);
+		}
+        printf("\n");
+	}
+	return 0;
 }
