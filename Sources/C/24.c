@@ -1,14 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <locale.h>
+
+
+char* get_current_date_str() {
+    char* buffer = malloc(sizeof(char) * 50);
+    time_t rawtime;
+    struct tm *info;
+
+    const char *months[] = {
+        "январь", "февраль", "март", "апрель", "май", "июнь",
+        "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"
+    };
+
+    time(&rawtime);
+    info = localtime(&rawtime);
+    sprintf(buffer, "%02d/%s/%d", info->tm_mday, months[info->tm_mon], info->tm_year + 1900);
+    return buffer;
+}
 
 int main() {
-    time_t timestamp;
-    struct tm *data;
-    char date_string[20];
-    time(&timestamp);
-    data = localtime(&timestamp);
-	setlocale(LC_ALL, "ru_RU.UTF-8");
-    printf("%s", ctime(&timestamp));
+    printf("%s\n", get_current_date_str());
 }
+
+
+
