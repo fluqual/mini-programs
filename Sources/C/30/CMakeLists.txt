@@ -9,6 +9,7 @@ add_subdirectory(dependencies/glfw)
 include_directories(dependencies/glad/include)
 add_executable(ProgramN30
     src/main.c
+    dependencies/glad/src/glad.c
 )
 target_include_directories(ProgramN30 PRIVATE dependencies)
 target_link_libraries(ProgramN30
