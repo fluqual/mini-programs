@@ -2,6 +2,17 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
+char* file_to_memory(FILE* file) {
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    rewind(file);
+    char* str = malloc(sizeof(char) * (file_size + 1));
+    fread(str, sizeof(char), file_size, file);
+    str[file_size] = '\0';
+    return str;
+}
 
 unsigned int CompileShader(unsigned int type, const char* source) {
     unsigned int id = glCreateShader(type);
@@ -38,17 +49,7 @@ static unsigned int CreateShader(const char* vertexShader, const char* fragmentS
     return program;
 }
 
-void InitVertexBuffer(unsigned int* buffer) {
-    float verticies[6] = {
-        -0.5f, -0.5f,
-        0.5f, -0.5f,
-        0.0f, 0.5f
-    };
-    glGenBuffers(1, buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, *buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), verticies, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
+
 void InitPixelBuffer(unsigned int* buffer, float* position) {
     glGenBuffers(1, buffer);
     glBindBuffer(GL_ARRAY_BUFFER, *buffer);
@@ -63,18 +64,19 @@ unsigned int CreatePixel(float* position) {
     return buffer;
 }
 
+void MovePixel(unsigned int shaderProgram, float* vec2Pos) {
+    int offsetLoc = glGetUniformLocation(shaderProgram, "offset");
+    glUniform2f(offsetLoc, vec2Pos[0], vec2Pos[1]);
+}
+
 void DrawBindedPixel() {
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
         glDrawArrays(GL_POINTS, 0, 1);
 }
 
-void DrawBindedTriangle() {
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
 int main(void)
 {
+    srand(time(NULL));
     GLFWwindow* window;
 
     if (!glfwInit())
@@ -99,39 +101,71 @@ int main(void)
     glfwSetCursor(window, cursor);
 
     printf("%s\n", glGetString(GL_VERSION));
-    unsigned int buffer;
-    InitVertexBuffer(&buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glEnableVertexAttribArray(0);
+    
+    FILE* vertexShader;
+    FILE* fragmentShader;
+    vertexShader = fopen("shaders/defaultV.shader", "r");
+    fragmentShader = fopen("shaders/defaultF.shader", "r");
+    if (vertexShader == NULL) {
+        printf("Unable to open vertex shader file\n");
+        return 1;
+    }
+    if (fragmentShader == NULL) {
+        printf("Unable to open fragment shader file\n");
+        return 1;
+    }
+    char* vertexShaderBuf = file_to_memory(vertexShader);
+    char* fragmentShaderBuf = file_to_memory(fragmentShader);
+    fclose(vertexShader);
+    fclose(fragmentShader);
 
-    char vertexShader[] = 
-        "#version 330 core\n" 
-        "layout(location = 0) in vec4 position;\n"
-        "void main() {\n"
-        "   gl_Position = position;\n"
-        "}\n";
-
-    char fragmentShader[] = 
-        "#version 330 core\n" 
-        "layout(location = 0) out vec4 color;\n"
-        "void main() {\n"
-        "   color = vec4(1.0, 0.5, 1.0, 1.0);\n"
-        "}\n";
-
-    unsigned int shader = CreateShader(vertexShader, fragmentShader);
+    //glEnableVertexAttribArray(0);
+    unsigned int shader = CreateShader(vertexShaderBuf, fragmentShaderBuf);
     glUseProgram(shader);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    float position[2] = {0.7f, 0.0f};
+    float position[2] = {0.0f, 0.0f};
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    float stepX = 2.0f / width;
+    float stepY = 2.0f / height;
     unsigned int pixelbuffer = CreatePixel(position);
+    int dir;
+    int moveToX = 0.0f;
+    int moveToY = 0.0f;
 
     while (!glfwWindowShouldClose(window))
-    {
+    {        
+        glfwGetFramebufferSize(window, &width, &height);
+        glViewport(0,0,width,height);
+
         glClear(GL_COLOR_BUFFER_BIT);
 
+        stepX = 2.0f / width;
+        stepY = 2.0f / height;
+        
         glBindBuffer(GL_ARRAY_BUFFER, pixelbuffer);
+
+        dir = (rand() % 4) + 1;
+        switch (dir) {
+            case 1:
+                moveToX = 1.0f;
+                moveToY = 0.0f;
+                break;
+            case 2:
+                moveToX = -1.0f;
+                moveToY = 0.0f;
+                break;
+            case 3:
+                moveToX = 0.0f;
+                moveToY = 1.0f;
+                break;
+            default:
+                moveToX = 0.0f;
+                moveToY = -1.0f;
+        }
+        position[0] += stepX * 2 * moveToX;
+        position[1] += stepX * 2 * moveToY;
+        MovePixel(shader, position);
         DrawBindedPixel();
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        DrawBindedTriangle();
 
         glfwSwapBuffers(window);
 
