@@ -119,7 +119,7 @@ int main(void)
     fclose(vertexShader);
     fclose(fragmentShader);
 
-    //glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(0);
     unsigned int shader = CreateShader(vertexShaderBuf, fragmentShaderBuf);
     glUseProgram(shader);
     float position[2] = {0.0f, 0.0f};
@@ -163,7 +163,7 @@ int main(void)
                 moveToY = -1.0f;
         }
         position[0] += stepX * 2 * moveToX;
-        position[1] += stepX * 2 * moveToY;
+        position[1] += stepY * 2 * moveToY;
         MovePixel(shader, position);
         DrawBindedPixel();
 
